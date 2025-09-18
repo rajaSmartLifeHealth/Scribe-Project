@@ -7,7 +7,18 @@ const searchRoute = require("./routes/search");
 
 app.use("/api/search", searchRoute);
 app.use(bodyParser.json());
-app.use(cors());
+
+let allowedOrigins
+
+allowedOrigins = 'http://localhost:3001'
+
+const corsOptions = {
+  origin: allowedOrigins,
+  exposedHeaders: ['Content-Disposition', 'Set-Cookie'],
+  credentials: true // Allow cookies to be sent
+} 
+
+app.use(cors(corsOptions));
 
 app.get('/', async(req,res) => {
   res.send({msg : 'Welcome to the server'});
