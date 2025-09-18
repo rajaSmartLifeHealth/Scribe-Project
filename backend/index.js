@@ -1,11 +1,13 @@
 const express = require('express');
 const app = express()
+const cors = required('cors');
 const bodyParser = require('body-parser');
 require('dotenv').config()
 const searchRoute = require("./routes/search");
 
 app.use("/api/search", searchRoute);
 app.use(bodyParser.json());
+app.use(cors());
 
 app.get('/', async(req,res) => {
   res.send({msg : 'Welcome to the server'});
