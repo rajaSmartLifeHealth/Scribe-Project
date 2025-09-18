@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express()
-const cors = required('cors');
+const cors = require('cors');
 const bodyParser = require('body-parser');
 require('dotenv').config()
 const searchRoute = require("./routes/search");
