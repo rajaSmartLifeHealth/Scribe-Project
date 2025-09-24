@@ -6,14 +6,14 @@ const transcriptRouter = express.Router();
 
 // Save transcript data
 transcriptRouter.post("/save", async (req, res) => {
-  const { clinician, transcript } = req.body;
+  const { clinicianId, transcript, soapSummary } = req.body;
 
   try {
-    if (!clinician || !transcript) {
+    if (!clinicianId || !transcript) {
       return res.status(400).json({ msg: "Clinician and transcript are required" });
     }
 
-    const newTranscript = new TranscriptModel({ clinician, transcript });
+    const newTranscript = new TranscriptModel({ clinicianId, transcript, soapSummary });
     await newTranscript.save();
 
     res.status(200).json({ msg: "Transcript saved", data: newTranscript });

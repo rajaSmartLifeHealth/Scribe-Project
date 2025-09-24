@@ -15,17 +15,17 @@ app.get('/', (req,res)=>{
 })
 
 app.use(express.json());
-app.use(cors());
+// app.use(cors());
 app.use('/users',userRouter);
 app.use('/notes', auth, noteRouter);
 app.use('/ai', auth, summaryRouter);
 app.use('/transcript', auth, transcriptRouter)
 
-// app.use(cors({
-//   origin: ["http://localhost:3000", "http://localhost:3001"], // dev URLs
-//   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-//   allowedHeaders: ["Content-Type", "Authorization", "application/json"]
-// }));
+app.use(cors({
+  origin: ["http://localhost:3000", "http://localhost:3001"], // dev URLs
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization", "application/json"]
+}));
 
 app.listen(process.env.PORT, async()=> {
     try {

@@ -16,7 +16,7 @@ const transcriptSchema = new mongoose.Schema({
     default: Date.now,
   },
   soapSummary: {
-    type : String
+    type : Object
   }
 });
 
