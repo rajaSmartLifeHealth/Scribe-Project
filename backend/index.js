@@ -9,6 +9,14 @@ const cors = require('cors');
 const { summaryRouter } = require('./routes/summary.routes');
 const { transcriptRouter } = require('./routes/transcript.routes');
 
+app.use(
+  cors({
+    origin: ["http://localhost:3000", "http://localhost:3001"], // your dev URLs
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true, // if using cookies/auth headers
+  })
+);
 
 app.get('/', (req,res)=>{
     res.send({"msg": "welcome to the server"});
@@ -21,11 +29,6 @@ app.use('/notes', auth, noteRouter);
 app.use('/ai', auth, summaryRouter);
 app.use('/transcript', auth, transcriptRouter)
 
-app.use(cors({
-  origin: ["http://localhost:3000", "http://localhost:3001"], // dev URLs
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization", "application/json"]
-}));
 
 app.listen(process.env.PORT, async()=> {
     try {
