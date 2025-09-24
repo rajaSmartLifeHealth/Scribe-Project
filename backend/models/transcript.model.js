@@ -17,6 +17,9 @@ const transcriptSchema = new mongoose.Schema({
   },
   soapSummary: {
     type : Object
+  },
+  patientObject: {
+   type : Object
   }
 });
 
