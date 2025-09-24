@@ -7,15 +7,14 @@ const summaryRouter = express.Router();
 summaryRouter.post("/summarise", async (req, res) => {
   try {
     const { 
-        // transcriptId
-     transcript
+        transcriptId
      } = req.body;
 
     // 1. Fetch transcript from DB
-    // const transcript = await TranscriptModel.findById(transcriptId);
-    // if (!transcript) {
-    //   return res.status(404).json({ msg: "Transcript not found" });
-    // }
+    const transcript = await TranscriptModel.findById(transcriptId);
+    if (!transcript) {
+      return res.status(404).json({ msg: "Transcript not found" });
+    }
 
     // 2. Send transcript text to AI model for SOAP summary
     // Example with OpenAI GPT

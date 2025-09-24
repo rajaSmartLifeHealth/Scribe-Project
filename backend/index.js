@@ -7,16 +7,19 @@ const{connection} = require('./config/db');
 const {noteRouter} =require('./routes/note.routes')
 const cors = require('cors');
 const { summaryRouter } = require('./routes/summary.routes');
+const { transcriptRouter } = require('./routes/transcript.routes');
+
 
 app.get('/', (req,res)=>{
     res.send({"msg": "welcome to the server"});
 })
 
 app.use(express.json());
+app.use(cors());
 app.use('/users',userRouter);
-app.use('/notes',noteRouter);
-app.use('/ai', summaryRouter);
-app.use(auth);
+app.use('/notes', auth, noteRouter);
+app.use('/ai', auth, summaryRouter);
+app.use('/transcript', auth, transcriptRouter)
 
 // app.use(cors({
 //   origin: ["http://localhost:3000", "http://localhost:3001"], // dev URLs

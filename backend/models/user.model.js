@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
-    unique: true, // prevent duplicate accounts
+    unique: true,
     lowercase: true
   },
   password: { 
@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ["patient", "clinician"], // only these two roles
+    enum: ["patient", "clinician"],
     required: true
   },
   createdAt: {
