@@ -65,7 +65,7 @@ userRouter.post('/login', async(req, res)=>{
     }
 })
 
-userRouter.get('/logout', async(req,res) =>{
+userRouter.post('/logout', async(req,res) =>{
     try{
 
         const token =req.headers.authorization?.split(' ')[1];
@@ -74,7 +74,7 @@ userRouter.get('/logout', async(req,res) =>{
             const blacktoken = await BlackTokenModel({blackToken:token})
             await blacktoken.save();
 
-            res.status(200).send({msg:'user log out successfully'})
+            res.status(200).send({msg:'user logged out successfully'})
         }
 
     }catch(err){

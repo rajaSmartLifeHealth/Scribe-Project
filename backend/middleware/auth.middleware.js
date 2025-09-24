@@ -1,7 +1,15 @@
 const jwt = require('jsonwebtoken');
+const { BlackTokenModel } = require('../models/token.models');
 
-const auth = (req,res, next)=>{
+const auth = async(req,res, next)=>{
     const token = req.headers.authorization?.split(" ")[1];
+
+     const blacklisted = await BlackTokenModel.findOne({ blackToken: token });
+
+    if (blacklisted) {
+      return res.status(401).json({ msg: "Session logged out. Please log in again." });
+    }
+
     if(token){
        const decoded = jwt.verify(token,"masai");
             if(decoded){
@@ -15,7 +23,7 @@ const auth = (req,res, next)=>{
             }
         }
     else {
-       res.send({msg: "pleasse login"});
+       res.send({msg: "please login"});
     }
 }
 module.exports = {

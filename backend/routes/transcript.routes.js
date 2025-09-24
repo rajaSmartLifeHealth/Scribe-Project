@@ -33,4 +33,20 @@ transcriptRouter.get("/", async (req, res) => {
   }
 });
 
+transcriptRouter.get("/:patient_id", async (req, res) => {
+  try {
+    const { patient_id } = req.params;
+
+    const transcripts = await TranscriptModel.find({ patient_id })
+      .sort({ createdAt: -1 });
+
+    res.status(200).json(transcripts);
+  } catch (error) {
+    console.error("Error fetching transcripts:", error);
+    res.status(500).json({ msg: "Error fetching transcripts" });
+  }
+});
+
+
+
 module.exports = { transcriptRouter };
