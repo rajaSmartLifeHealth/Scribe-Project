@@ -11,7 +11,7 @@ const { transcriptRouter } = require('./routes/transcript.routes');
 
 app.use(
   cors({
-    origin: ["http://localhost:3000", "http://localhost:3001"], // your dev URLs
+    origin: ["http://localhost:3000", "http://localhost:3001", "https://scribe-project-nextjs-ed0t9wpgj-narendras-projects-be87aeb5.vercel.app/"],
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true, // if using cookies/auth headers
