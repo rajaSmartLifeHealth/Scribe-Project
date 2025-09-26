@@ -20,6 +20,9 @@ const transcriptSchema = new mongoose.Schema({
   },
   patientObject: {
    type : Object
+  },
+  notes : {
+    type: Object
   }
 });
 
