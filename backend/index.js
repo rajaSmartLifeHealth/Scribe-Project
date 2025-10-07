@@ -11,10 +11,10 @@ const { transcriptRouter } = require('./routes/transcript.routes');
 
 app.use(
   cors({
-    origin: ["http://localhost:3000", "http://localhost:3001", "https://scribe-project-nextjs.vercel.app/"],
+    origin: ["https://scribe-project-nextjs.vercel.app", "http://localhost:3000", "http://localhost:3001"],
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true, // if using cookies/auth headers
+    credentials: true,
   })
 );
 
