@@ -26,7 +26,7 @@ app.get('/', (req,res)=>{
 app.use(express.json());
 // app.use(cors());
 app.use('/users',userRouter);
-app.use('/ai', searchRouter);
+app.use('/ai', auth, searchRouter);
 app.use('/notes', auth, noteRouter);
 app.use('/ai', auth, summaryRouter);
 app.use('/transcript', auth, transcriptRouter)
