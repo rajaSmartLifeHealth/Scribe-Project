@@ -8,6 +8,7 @@ const {noteRouter} =require('./routes/note.routes')
 const cors = require('cors');
 const { summaryRouter } = require('./routes/summary.routes');
 const { transcriptRouter } = require('./routes/transcript.routes');
+const searchRouter = require('./routes/search');
 
 app.use(
   cors({
@@ -25,6 +26,7 @@ app.get('/', (req,res)=>{
 app.use(express.json());
 // app.use(cors());
 app.use('/users',userRouter);
+app.use('/ai', searchRouter);
 app.use('/notes', auth, noteRouter);
 app.use('/ai', auth, summaryRouter);
 app.use('/transcript', auth, transcriptRouter)
