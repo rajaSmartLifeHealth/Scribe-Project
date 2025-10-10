@@ -82,7 +82,6 @@ userRouter.post('/logout', async(req,res) =>{
     }
 })
 
-
 module.exports = {
     userRouter
 }

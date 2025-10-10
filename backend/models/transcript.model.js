@@ -1,31 +1,18 @@
-// models/Transcript.model.js
 const mongoose = require("mongoose");
-const { type } = require("os");
 
 const transcriptSchema = new mongoose.Schema({
-  clinicianId: {
-    type: String,
-    required: true,
-  },
-  transcript: {
-    type: String,
-    required: true,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-  soapSummary: {
-    type : Object
-  },
-  patientObject: {
-   type : Object
-  },
-  notes : {
-    type: Object
-  }
+  clinician: { type: mongoose.Schema.Types.ObjectId, ref: "users", required: true },
+  patient: { type: Object }, // could later become ref to patient collection
+
+  transcript_text: { type: String, required: true },
+  soap_summary: { type: Object },
+
+  notes: [{ type: mongoose.Schema.Types.ObjectId, ref: "notes" }],
+  prompts_used: [{ type: mongoose.Schema.Types.ObjectId, ref: "prompts" }],
+
+  created_at: { type: Date, default: Date.now },
+  updated_at: { type: Date },
 });
 
 const TranscriptModel = mongoose.model("transcripts", transcriptSchema);
-
 module.exports = { TranscriptModel };

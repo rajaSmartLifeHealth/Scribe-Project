@@ -3,15 +3,14 @@ const express = require('express');
 const {v4 : uuidv4} = require('uuid');
 
 const { TranscriptModel } = require("../models/transcript.model");
-const { equal } = require('assert');
 
 const transcriptRouter = express.Router();
 
 // Save transcript data
 transcriptRouter.post("/save", async (req, res) => {
-  const { transcript, soapSummary, patient_data, notes } = req.body;
+  const { transcript, patient_data } = req.body;
 
-  const clinicianId  = req.clinicianId;
+  const clinicianId  = req.clinician;
   try {
     if (!clinicianId || !transcript) {
       return res.status(400).json({ msg: "Clinician and transcript are required" });
@@ -33,7 +32,7 @@ transcriptRouter.post("/save", async (req, res) => {
 // Fetch transcripts (optional)
 transcriptRouter.get("/", async (req, res) => {
   try {
-      const clinicianId  = req.clinicianId;
+      const clinicianId  = req.clinician;
 
     const transcripts = await TranscriptModel.find();
     res.status(200).json(transcripts);
@@ -45,7 +44,7 @@ transcriptRouter.get("/", async (req, res) => {
 transcriptRouter.get("/:transcript_id", async (req, res) => {
   try {
     const { transcript_id } = req.params;
-    const clinicianId = req.clinicianId;
+    const clinicianId = req.clinician;
       const transcript = await TranscriptModel.findOne({
         _id: transcript_id,
         clinicianId: clinicianId

@@ -17,7 +17,7 @@ const auth = async (req, res, next) => {
 
     // verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET || "masai");
-    req.clinicianId = decoded.userID;
+    req.clinician = decoded.userID;
     next();
   } catch (err) {
     if (err.name === "TokenExpiredError") {

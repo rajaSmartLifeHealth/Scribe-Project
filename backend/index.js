@@ -9,6 +9,7 @@ const cors = require('cors');
 const { summaryRouter } = require('./routes/summary.routes');
 const { transcriptRouter } = require('./routes/transcript.routes');
 const searchRouter = require('./routes/search');
+const { consultationRouter } = require('./routes/consultation.routes');
 
 app.use(
   cors({
@@ -27,10 +28,10 @@ app.use(express.json());
 // app.use(cors());
 app.use('/users',userRouter);
 app.use('/ai', auth, searchRouter);
-app.use('/notes', auth, noteRouter);
+app.use('/api/notes', auth, noteRouter);
 app.use('/ai', auth, summaryRouter);
 app.use('/transcript', auth, transcriptRouter)
-
+app.use('/api/consultation', auth, consultationRouter);
 
 app.listen(process.env.PORT, async()=> {
     try {
