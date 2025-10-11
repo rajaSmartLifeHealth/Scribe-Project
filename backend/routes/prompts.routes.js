@@ -1,5 +1,5 @@
 const express = require("express");
-const { PromptModel } = require("../models/Prompt.model");
+const { PromptModel } = require("../models/prompts");
 const { auth } = require("../middleware/auth.middleware");
 
 const promptRouter = express.Router();

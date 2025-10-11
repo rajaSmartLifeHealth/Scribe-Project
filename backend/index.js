@@ -10,6 +10,7 @@ const { summaryRouter } = require('./routes/summary.routes');
 const { transcriptRouter } = require('./routes/transcript.routes');
 const searchRouter = require('./routes/search');
 const { consultationRouter } = require('./routes/consultation.routes');
+const { promptRouter } = require('./routes/prompts.routes');
 
 app.use(
   cors({
@@ -32,6 +33,7 @@ app.use('/api/notes', auth, noteRouter);
 app.use('/ai', auth, summaryRouter);
 app.use('/transcript', auth, transcriptRouter)
 app.use('/api/consultation', auth, consultationRouter);
+app.use('/api/prompts', auth, promptRouter)
 
 app.listen(process.env.PORT, async()=> {
     try {
