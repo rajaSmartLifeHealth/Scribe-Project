@@ -41,9 +41,6 @@ noteRouter.post("/:consultationId", async (req, res) => {
   }
 });
 
-/**
- * Get all notes for a consultation
- */
 noteRouter.get("/:consultationId", auth, async (req, res) => {
   try {
     const { consultationId } = req.params;
@@ -58,13 +55,10 @@ noteRouter.get("/:consultationId", auth, async (req, res) => {
   }
 });
 
-/**
- * Update a note
- */
 noteRouter.patch("/:noteId", auth, async (req, res) => {
   try {
     const { noteId } = req.params;
-    const clinicianId = req.user.id;
+    const clinicianId = req.clinician;
     const note = await NoteModel.findById(noteId);
 
     if (!note) return res.status(404).json({ msg: "Note not found." });

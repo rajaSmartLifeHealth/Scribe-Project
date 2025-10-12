@@ -28,10 +28,10 @@ app.get('/', (req,res)=>{
 app.use(express.json());
 // app.use(cors());
 app.use('/users',userRouter);
-app.use('/ai', auth, searchRouter);
+app.use('/api/ai', auth, searchRouter);
 app.use('/api/notes', auth, noteRouter);
-app.use('/ai', auth, summaryRouter);
-app.use('/transcript', auth, transcriptRouter)
+app.use('/api/ai', auth, summaryRouter);
+app.use('/api/transcript', auth, transcriptRouter)
 app.use('/api/consultation', auth, consultationRouter);
 app.use('/api/prompts', auth, promptRouter)
 
