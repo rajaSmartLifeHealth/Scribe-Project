@@ -74,7 +74,7 @@ summaryRouter.post("/:consultationId/summarise", async (req, res) => {
 
 summaryRouter.post("/analyze", async (req, res) => {
   try {
-    let { images } = req.body;
+    let { prompt, images } = req.body;
     // Make image input optional; coerce non-arrays to an empty list
     images = Array.isArray(images) ? images : [];
 
@@ -140,7 +140,7 @@ summaryRouter.post("/analyze", async (req, res) => {
     ];
 
     const resp = await openai.chat.completions.create({
-      model: "gpt-4o",
+      model: "gpt-4o-mini",
       messages: [
         systemMsg,
         { role: "user", content: userContent }
