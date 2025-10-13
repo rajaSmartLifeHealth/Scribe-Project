@@ -139,7 +139,6 @@ summaryRouter.post("/analyze", async (req, res) => {
       }))
     ];
 
-    console.log(userContent);
     const resp = await openai.chat.completions.create({
       model: "gpt-4o",
       messages: [

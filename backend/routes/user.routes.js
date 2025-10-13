@@ -2,7 +2,9 @@ const express = require('express');
 const {UserModel} = require('../models/user.model');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const { BlackTokenModel } =require('../models/token.models')
+const { BlackTokenModel } =require('../models/token.models');
+const { equal } = require('assert');
+const { auth } = require('../middleware/auth.middleware');
 
 const userRouter = express.Router();
 
@@ -80,6 +82,28 @@ userRouter.post('/logout', async(req,res) =>{
     }catch(err){
         res.status(404).send({msg:'error in user logout',Errors:err})
     }
+})
+
+userRouter.get('/profile',  auth, async(req, res) => {
+     try {
+
+        const id = req.clinician;
+     const user = await UserModel.findById(id);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    res.json({
+      success: true,
+      data: {
+        name: user.username,
+        email: user.email,
+        role: user.role,
+        createdAt: user.createdAt,
+      },
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to fetch profile" });
+  }
 })
 
 module.exports = {
