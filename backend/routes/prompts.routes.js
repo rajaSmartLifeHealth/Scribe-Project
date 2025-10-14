@@ -67,7 +67,7 @@ promptRouter.patch("/:promptId", auth, async (req, res) => {
 
 
 // 🔵 Add a transcript ID reference to a prompt
-promptRouter.patch("/:promptId/add-transcript/:transcriptId", auth, async (req, res) => {
+promptRouter.patch("/:promptId/add-prompt/:transcriptId", auth, async (req, res) => {
   try {
     const { promptId, transcriptId } = req.params;
 
