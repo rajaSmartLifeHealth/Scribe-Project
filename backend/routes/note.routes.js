@@ -23,15 +23,14 @@ noteRouter.post("/:consultationId", async (req, res) => {
 
     const newNote = await NoteModel.create({
       clinician: clinicianId,
-      user: consultation.user,
       consultation: consultationId,
       transcript: transcriptId,
       body,
     });
 
     // Link note back to consultation
-    consultation.notesIds = consultation.notesIds || [];
-    consultation.notesIds.push(newNote._id);
+    consultation.notes = consultation.notes || [];
+    consultation.notes.push(newNote._id);
     await consultation.save();
 
     res.status(201).json({ msg: "Note added successfully.", note: newNote });

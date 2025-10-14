@@ -123,8 +123,15 @@ consultationRouter.get("/:id", auth, async (req, res) => {
     const consultation = await ConsultationModel.findOne({ _id: id })
       .populate("clinician", "username email")
       .populate("patient")
-      .populate("transcript")
-      .populate("notes")
+      .populate({
+        path: "notes",
+        populate: {
+          path: "clinician",
+          select: "username email", // Only return needed clinician info
+        },
+        select: "body createdAt", // Only show body and timestamp for each note       
+      })
+       .populate("transcript");
 
     if (!consultation) {
       return res.status(404).json({ msg: "Consultation not found" });
