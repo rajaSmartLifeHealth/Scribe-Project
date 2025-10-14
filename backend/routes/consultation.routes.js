@@ -134,8 +134,8 @@ consultationRouter.get("/:id", auth, async (req, res) => {
       .populate({
         path: "transcript",
         populate: {
-          path: "prompt_used", // Nested populate to bring the prompt
-          select: "title question createdAt", // Choose fields you want
+          path: "prompt_used", 
+          select: "prompt_name prompt_text createdAt", // Choose fields you want
         },
       });
 

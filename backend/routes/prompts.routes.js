@@ -1,9 +1,9 @@
 const express = require("express");
 const { PromptModel } = require("../models/prompts");
 const { auth } = require("../middleware/auth.middleware");
+const { TranscriptModel } = require("../models/transcript.model");
 
 const promptRouter = express.Router();
-
 
 // 🟢 Add new prompt
 promptRouter.post("/", auth, async (req, res) => {
@@ -71,22 +71,41 @@ promptRouter.patch("/:promptId/add-prompt/:transcriptId", auth, async (req, res)
   try {
     const { promptId, transcriptId } = req.params;
 
-    const prompt = await PromptModel.findOneAndUpdate(
-      { _id: promptId, clinician: req.clinician },
-      { $addToSet: { transcript_ids: transcriptId }, updated_at: new Date() },
-      { new: true }
-    );
+    // Step 1: Verify that prompt exists and belongs to this clinician
+    const prompt = await PromptModel.findOne({
+      _id: promptId,
+      clinician: req.clinician
+    });
 
     if (!prompt) {
       return res.status(404).json({ msg: "Prompt not found or not accessible" });
     }
 
-    res.status(200).json({ msg: "Transcript linked to prompt", data: prompt });
+    // Step 2: Update transcript with this prompt
+    const transcript = await TranscriptModel.findOneAndUpdate(
+      { _id: transcriptId },
+      { 
+        $set: { prompt_used: promptId },
+        updated_at: new Date() 
+      },
+      { new: true }
+    );
+
+    if (!transcript) {
+      return res.status(404).json({ msg: "Transcript not found" });
+    }
+
+    res.status(200).json({ 
+      msg: "Prompt linked to transcript successfully",
+      data: transcript 
+    });
+
   } catch (error) {
-    console.error("Error linking transcript:", error);
+    console.error("Error linking prompt to transcript:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
 
 
 // 🔴 Soft delete prompt
