@@ -140,7 +140,7 @@ summaryRouter.post("/analyze", async (req, res) => {
     ];
 
     const resp = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
+      model: "gpt-4o",
       messages: [
         systemMsg,
         { role: "user", content: userContent }
