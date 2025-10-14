@@ -120,7 +120,7 @@ consultationRouter.get("/:id", auth, async (req, res) => {
   try {
     const { id } = req.params;
 
-    const consultation = await ConsultationModel.findOne({ _id: id })
+     const consultation = await ConsultationModel.findOne({ _id: id })
       .populate("clinician", "username email")
       .populate("patient")
       .populate({
@@ -129,9 +129,15 @@ consultationRouter.get("/:id", auth, async (req, res) => {
           path: "clinician",
           select: "username email", // Only return needed clinician info
         },
-        select: "body createdAt", // Only show body and timestamp for each note       
+        select: "body createdAt", // Only show body and timestamp for each note
       })
-       .populate("transcript");
+      .populate({
+        path: "transcript",
+        populate: {
+          path: "prompt_used", // Nested populate to bring the prompt
+          select: "title question createdAt", // Choose fields you want
+        },
+      });
 
     if (!consultation) {
       return res.status(404).json({ msg: "Consultation not found" });
@@ -148,6 +154,16 @@ consultationRouter.get("/", auth, async (req, res) => {
     const clinicianId = req.clinician;
     const consultations = await ConsultationModel.find({ clinician: clinicianId })
       .populate("clinician", "username email")
+      .populate("patient")
+      .populate({
+        path: "notes",
+        populate: {
+          path: "clinician",
+          select: "username email", // Only return needed clinician info
+        },
+        select: "body createdAt", // Only show body and timestamp for each note       
+      })
+      .populate("transcript")
       .sort({ started_at: -1 });
 
     res.json({ consultations });
