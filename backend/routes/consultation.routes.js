@@ -120,7 +120,7 @@ consultationRouter.get("/:id", auth, async (req, res) => {
   try {
     const { id } = req.params;
 
-     const consultation = await ConsultationModel.findOne({ _id: id })
+     const consultation = await ConsultationModel.findOne({ _id: id, clinician: req.clinician })
       .populate("clinician", "username email")
       .populate("patient")
       .populate({
@@ -140,7 +140,7 @@ consultationRouter.get("/:id", auth, async (req, res) => {
       });
 
     if (!consultation) {
-      return res.status(404).json({ msg: "Consultation not found" });
+      return res.status(404).json({ msg: "Consultation not found or invalid" },);
     }
 
     res.json({ consultation });
