@@ -30,7 +30,7 @@ promptRouter.post("/", auth, async (req, res) => {
 promptRouter.get("/", auth, async (req, res) => {
   try {
     const prompts = await PromptModel.find({
-      clinician: req.clinician,
+       is_shareable: true,
       is_deleted: false,
     }).sort({ created_at: -1 });
 
