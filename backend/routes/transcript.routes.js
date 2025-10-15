@@ -41,24 +41,22 @@ transcriptRouter.post("/update-text", async (req, res) => {
 //   }
 // });
 
-// transcriptRouter.get("/:transcript_id", async (req, res) => {
-//   try {
-//     const { transcript_id } = req.params;
-//     const clinicianId = req.clinician;
-//       const transcript = await TranscriptModel.findOne({
-//         _id: transcript_id,
-//         clinicianId: clinicianId
-//       });
+transcriptRouter.get("/:consultation_id", async (req, res) => {
+  try {
+    const { consultation_id } = req.params;
+    const clinicianId = req.clinician;
+      const transcript = await TranscriptModel.findOne({
+        clinician: clinicianId,
+        consultation: consultation_id
+      });
 
-//       console.log(transcript);
-
-//     res.status(200).json(transcript);
-//   } catch (error) {
-//     console.log(error);
-//     console.error("Error fetching transcripts:", error);
-//     res.status(500).json({ msg: "Error fetching transcripts" });
-//   }
-// });
+    res.status(200).json(transcript);
+  } catch (error) {
+    console.log(error);
+    console.error("Error fetching transcripts:", error);
+    res.status(500).json({ msg: "Error fetching transcripts" });
+  }
+});
 
 
 

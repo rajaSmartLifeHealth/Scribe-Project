@@ -29,9 +29,14 @@ promptRouter.post("/", auth, async (req, res) => {
 // 🟡 Get all prompts for clinician
 promptRouter.get("/", auth, async (req, res) => {
   try {
+    const clinicianId = req.clinician; 
+
     const prompts = await PromptModel.find({
-       is_shareable: true,
       is_deleted: false,
+      $or: [
+        { is_shareable: true },            
+        { clinician: clinicianId }       
+      ]
     }).sort({ created_at: -1 });
 
     res.status(200).json({ prompts });
@@ -40,6 +45,7 @@ promptRouter.get("/", auth, async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
 
 
 // 🟠 Update prompt (edit text, shareable flag, etc.)
