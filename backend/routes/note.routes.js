@@ -13,7 +13,7 @@ noteRouter.post("/:consultationId", async (req, res) => {
   try {
     const { body, transcriptId } = req.body;
     const clinicianId = req.clinician;
-    const { consultationId } = req.params;
+    const { consultationId } = req.params; 
 
     if (!body) return res.status(400).json({ msg: "Note body is required." });
 
