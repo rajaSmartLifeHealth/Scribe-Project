@@ -2,7 +2,7 @@ const WebSocket = require('ws');
 
 console.log('🔌 Testing WebSocket connection...');
 
-const ws = new WebSocket('ws://localhost:5001/transcription-stream');
+const ws = new WebSocket('ws://localhost:4500/transcription-stream');
 
 ws.on('open', () => {
   console.log('✅ WebSocket connected successfully!');
