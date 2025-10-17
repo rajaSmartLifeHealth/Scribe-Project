@@ -5,12 +5,14 @@ const {userRouter} = require('./routes/user.routes');
 const {auth} = require('./middleware/auth.middleware');
 const{connection} = require('./config/db');
 const {noteRouter} =require('./routes/note.routes')
+const http = require('http');
 const cors = require('cors');
 const { summaryRouter } = require('./routes/summary.routes');
 const { transcriptRouter } = require('./routes/transcript.routes');
 const searchRouter = require('./routes/search');
 const { consultationRouter } = require('./routes/consultation.routes');
 const { promptRouter } = require('./routes/prompts.routes');
+const StreamingTranscriptionService = require('./services/streaming-transcription.service');
 
 app.use(
   cors({
@@ -35,7 +37,19 @@ app.use('/api/transcript', auth, transcriptRouter)
 app.use('/api/consultation', auth, consultationRouter);
 app.use('/api/prompts', auth, promptRouter)
 
-app.listen(process.env.PORT, async()=> {
+// Transcription routes are now enabled above
+
+// Initialize streaming transcription service
+const streamingService = new StreamingTranscriptionService();
+
+// Create HTTP server for WebSocket support
+const server = http.createServer(app);
+
+// Initialize WebSocket server
+const wss = streamingService.initializeWebSocket(server);
+
+
+server.listen(process.env.PORT, async()=> {
     try {
         await connection
         console.log("hi this is mongodb");
@@ -44,3 +58,13 @@ app.listen(process.env.PORT, async()=> {
         console.log(error);
     }
 })
+
+// Keep server alive
+server.on('error', (err) => {
+    console.error('Server error:', err);
+});
+
+process.on('uncaughtException', (err) => {
+    console.error('Uncaught exception:', err);
+    process.exit(1);
+});
