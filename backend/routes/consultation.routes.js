@@ -79,6 +79,7 @@ consultationRouter.post("/:id/end", async (req, res) => {
             ]
             If none found, return [].
             Text: """${finalSummary}"""`;
+let highlights = [];
 
         const completion = await openai.chat.completions.create({
           model: "gpt-4o",
@@ -88,7 +89,7 @@ consultationRouter.post("/:id/end", async (req, res) => {
           ],
         });
 
-         highlights = JSON.parse(entityCompletion.choices[0].message.content.trim());
+         highlights = JSON.parse(completion.choices[0].message.content.trim());
       } catch (err) {
         console.warn("⚠️ SOAP generation failed, continuing without AI:", err.message);
       }
