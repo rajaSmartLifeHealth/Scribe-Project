@@ -71,7 +71,14 @@ consultationRouter.post("/:id/end", async (req, res) => {
       try {
         const systemPrompt =
           usedPrompt ||
-          "You are a helpful medical assistant. Summarize the consultation transcript into SOAP format (Subjective, Objective, Assessment, Plan). Be concise, factual, and professional.";
+          `You are a helpful medical assistant. Summarize the consultation transcript into SOAP format (Subjective, Objective, Assessment, Plan). Be concise, factual, and professional.
+          From the following text, identify any diseases, symptoms, or medical conditions that might have SNOMED CT codes.
+            Return a JSON array with the format:
+            [
+              { "term": "<condition_name>", "possible_snomed": "<code or null>" }
+            ]
+            If none found, return [].
+            Text: """${finalSummary}"""`;
 
         const completion = await openai.chat.completions.create({
           model: "gpt-4o",
@@ -81,7 +88,7 @@ consultationRouter.post("/:id/end", async (req, res) => {
           ],
         });
 
-        finalSummary = completion.choices[0].message.content.trim();
+         highlights = JSON.parse(entityCompletion.choices[0].message.content.trim());
       } catch (err) {
         console.warn("⚠️ SOAP generation failed, continuing without AI:", err.message);
       }
@@ -90,7 +97,7 @@ consultationRouter.post("/:id/end", async (req, res) => {
     const updatedTranscript = await TranscriptModel.findByIdAndUpdate(
       consultation.transcript._id,
       {
-        ...(finalSummary && { summary: finalSummary }),
+        ...(finalSummary, highlights && { summary: finalSummary, highlights }),
         updated_at: new Date(),
       },
       { new: true }
@@ -109,6 +116,7 @@ consultationRouter.post("/:id/end", async (req, res) => {
       msg: "Consultation ended successfully",
       transcript: updatedTranscript,
       summary: finalSummary || "Summary not generated",
+      highlights
     });
   } catch (error) {
     console.error("❌ Error ending consultation:", error);
