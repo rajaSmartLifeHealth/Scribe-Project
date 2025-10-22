@@ -68,6 +68,7 @@ consultationRouter.post("/:id/end", async (req, res) => {
 
     // 2️⃣ Generate SOAP summary if not provided manually
     let finalSummary
+    let highlights = [];
       try {
         const systemPrompt =
           usedPrompt ||
@@ -79,7 +80,7 @@ consultationRouter.post("/:id/end", async (req, res) => {
             ]
             If none found, return [].
             Text: """${finalSummary}"""`;
-let highlights = [];
+
 
         const completion = await openai.chat.completions.create({
           model: "gpt-4o",
